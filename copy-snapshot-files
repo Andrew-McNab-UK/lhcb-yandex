@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Copy the files to a Yandex VM needed to make a snapshot
+#
+# On your computer, put the hostcert.pem/hostkey.pem in the current 
+# directory and clone the GitHub lhcb-yandex repo so it is a subdirectory
+#
+# The single argument is the IP address of the VM you will snapshot
+#
+# Execute with  lhcb-yandex/copy-snapshot-files xx.xx.xx.xx 
+#
+
+scp hostcert.pem \
+    hostkey.pem  \ 
+    lhcb-yandex/yandex-vm-setup \
+    lhcb-yandex/yandex-dirac-run \
+    lhcb-yandex/yandex-dirac-setup \
+    lhcb-yandex/prepare-yandex-snapshot \
+    dirac@$1:

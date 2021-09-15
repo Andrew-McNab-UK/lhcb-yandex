@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# Must be run as root
+#
+# Get the system ready for a snapshot on the web dashboard
+#
+# You need to have these files in the dirac $HOME directory first!
+#   hostcert.pem 
+#   hostkey.pem
+#   yandex-vm-setup
+#   yandex-dirac-setup
+#   yandex-dirac-run
+# 
+
+echo '/home/dirac/yandex-vm-setup' >>/etc/rc.d/rc.local
+sync
+fsfreeze -f /
