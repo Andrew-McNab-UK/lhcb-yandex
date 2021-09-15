@@ -13,5 +13,5 @@
 # 
 
 echo '/home/dirac/yandex-vm-setup' >>/etc/rc.d/rc.local
-sync
-fsfreeze -f /
+echo 'Now execute   shutdown -h now'
+
