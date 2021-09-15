@@ -1,0 +1,40 @@
+#!/bin/sh
+# 
+# Setup commands which must be run as the dirac user
+#
+
+set -x
+
+date
+
+mkdir -p $HOME/etc/grid-security
+cp $HOME/hostcert.pem $HOME/etc/grid-security
+cp $HOME/hostkey.pem $HOME/etc/grid-security
+chmod go-rw,u-w $HOME/hostkey.pem 
+
+cat $HOME/hostcert.pem $HOME/hostkey.pem >$HOME/etc/grid-security/x509proxy.pem
+chmod go-rw,u-w $HOME/etc/grid-security/x509proxy.pem
+
+mkdir -p $HOME/production/Pilot3
+cd $HOME/production/Pilot3
+
+which wget
+
+wget --no-check-certificate -q https://lhcbdirac.s3.cern.ch/Pilot3/LHCbPilotCommands.py -O LHCbPilotCommands.py
+wget --no-check-certificate -q https://lhcbdirac.s3.cern.ch/Pilot3/dirac-install.py -O dirac-install.py
+wget --no-check-certificate -q https://lhcbdirac.s3.cern.ch/Pilot3/dirac-pilot.py -O dirac-pilot.py
+wget --no-check-certificate -q https://lhcbdirac.s3.cern.ch/Pilot3/pilot.json -O pilot.json
+wget --no-check-certificate -q https://lhcbdirac.s3.cern.ch/Pilot3/pilotCommands.py -O pilotCommands.py
+wget --no-check-certificate -q https://lhcbdirac.s3.cern.ch/Pilot3/pilotTools.py -O pilotTools.py
+wget --no-check-certificate -q https://lhcbdirac.s3.cern.ch/Pilot3/PilotLogger.py -O PilotLogger.py
+wget --no-check-certificate -q https://lhcbdirac.s3.cern.ch/Pilot3/PilotLoggerTools.py -O PilotLoggerTools.py
+wget --no-check-certificate -q https://lhcbdirac.s3.cern.ch/Pilot3/MessageSender.py -O MessageSender.py
+
+ls -al
+
+#
+for file in LHCbPilotCommands.py dirac-install.py dirac-pilot.py pilot.json pilotCommands.py pilotTools.py PilotLogger.py PilotLoggerTools.py MessageSender.py; do wget --no-check-certificate -q https://lhcbdirac.s3.cern.ch/Pilot3/${file} -O ${file}; done
+
+ls -al
+python -m compileall .
+

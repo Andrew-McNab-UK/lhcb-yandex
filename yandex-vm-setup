@@ -1,0 +1,63 @@
+#!/bin/sh
+#
+# Setup commands which must be run as root (from /etc/rc.d/rc.local)
+#
+
+(
+date
+setenforce 0
+yum -y install epel-release
+yum -y install yum-priorities
+yum -y install http://repository.egi.eu/sw/production/umd/4/centos7/x86_64/updates/umd-release-4.1.3-1.el7.centos.noarch.rpm
+yum -y update
+yum -y install wget joe cvmfs cvmfs-config-egi glibc glibc-headers
+echo '/cvmfs program:/etc/auto.cvmfs' >>/etc/auto.master
+echo 'CVMFS_HTTP_PROXY=DIRECT' >>/etc/cvmfs/default.conf
+systemctl restart autofs
+
+# Check if cvmfs is working
+ls /etc/grid-security /cvmfs/lhcb.cern.ch
+
+# Disable TCP offloading etc
+ethtool -K eth0 tso off gso off gro off
+
+# We never let VMs send emails (likely to be annoying errors from root)
+/sbin/iptables -A OUTPUT -p tcp --dport 25 -j DROP
+
+# Get CA certs from cvmfs
+rm -Rf /etc/grid-security
+ln -sf /cvmfs/grid.cern.ch/etc/grid-security /etc/grid-security
+export X509_CERT_DIR=/etc/grid-security/certificates
+export SSL_CERT_DIR=/etc/grid-security/certificates
+
+# These will be picked up by login etc shells
+cat <<EOF > /etc/profile.d/grid-paths.sh
+export X509_CERT_DIR=/etc/grid-security/certificates
+export SSL_CERT_DIR=/etc/grid-security/certificates
+export X509_VOMS_DIR=/etc/grid-security/vomsdir
+EOF
+
+# Swap as little as possible
+sysctl vm.swappiness=1
+       
+# Don't want to be doing this at 4 or 5am every day!
+rm -f /etc/cron.daily/mlocate.cron
+
+# Log proxies used for cvmfs
+for i in /cvmfs/*
+do
+  /bin/attr -g proxy $i
+done
+
+# Do DIRAC setup then run the DIRAC pilot
+/usr/bin/sudo -i -n -u dirac /home/dirac/yandex-dirac-setup
+/usr/bin/sudo -i -n -u dirac /home/dirac/yandex-dirac-run
+
+# Try conventional shutdown
+#/sbin/shutdown -h now
+sleep 60
+
+## If that fails, do an instant reboot
+#echo o > /proc/sysrq-trigger
+
+) >/var/log/yandex-vm-setup.log 2>&1
