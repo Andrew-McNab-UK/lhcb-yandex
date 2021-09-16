@@ -12,6 +12,11 @@
 #   yandex-dirac-run
 # 
 
-echo '/home/dirac/yandex-vm-setup' >>/etc/rc.d/rc.local
-echo 'Now execute   shutdown -h now'
+# Catch up as much as we can before the snapshot
+yum -y update 
 
+# Our script is run at the end of boot up
+echo '/home/dirac/yandex-vm-setup' >>/etc/rc.d/rc.local
+
+# Rather than just do this to you!
+echo 'Now execute   shutdown -h now'

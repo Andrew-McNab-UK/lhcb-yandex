@@ -11,9 +11,9 @@
 #
 
 scp hostcert.pem \
-    hostkey.pem  \ 
-    lhcb-yandex/yandex-vm-setup \
-    lhcb-yandex/yandex-dirac-run \
-    lhcb-yandex/yandex-dirac-setup \
-    lhcb-yandex/prepare-yandex-snapshot \
+    hostkey.pem  \
+    lhcb-yandex/yandex-wn-setup \
+    lhcb-yandex/yandex-wn-dirac-run \
+    lhcb-yandex/yandex-wn-dirac-setup \
+    lhcb-yandex/yandex-wn-prepare-snapshot \
     dirac@$1:

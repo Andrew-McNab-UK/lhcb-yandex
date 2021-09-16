@@ -50,8 +50,13 @@ do
 done
 
 # Do DIRAC setup then run the DIRAC pilot
-/usr/bin/sudo -i -n -u dirac /home/dirac/yandex-dirac-setup
-/usr/bin/sudo -i -n -u dirac /home/dirac/yandex-dirac-run
+/usr/bin/sudo -i -n -u dirac /home/dirac/yandex-wn-dirac-setup
+
+( /usr/bin/sudo -i -n -u dirac /home/dirac/yandex-wn-dirac-run slot1 ) >/var/log/yandex-wn-dirac-run.slot1.log 2>&1 &
+( /usr/bin/sudo -i -n -u dirac /home/dirac/yandex-wn-dirac-run slot2 ) >/var/log/yandex-wn-dirac-run.slot2.log 2>&1 &
+
+# Wait until both subprocesses are finished
+wait
 
 # Try conventional shutdown
 #/sbin/shutdown -h now
@@ -60,4 +65,4 @@ sleep 60
 ## If that fails, do an instant reboot
 #echo o > /proc/sysrq-trigger
 
-) >/var/log/yandex-vm-setup.log 2>&1
+) >/var/log/yandex-wn-setup.log 2>&1
