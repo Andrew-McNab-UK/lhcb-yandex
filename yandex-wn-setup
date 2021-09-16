@@ -75,8 +75,8 @@ done
 # Do DIRAC setup then run the DIRAC pilot
 /usr/bin/sudo -i -n -u lhcb /home/lhcb/yandex-wn-dirac-setup
 
-( /usr/bin/sudo -i -n -u dirac /home/lhcb/yandex-wn-dirac-run slot1 ) >/var/log/yandex-wn-dirac-run.slot1.log 2>&1 &
-( /usr/bin/sudo -i -n -u dirac /home/lhcb/yandex-wn-dirac-run slot2 ) >/var/log/yandex-wn-dirac-run.slot2.log 2>&1 &
+( /usr/bin/sudo -i -n -u lhcb /home/lhcb/yandex-wn-dirac-run slot1 ) >/var/log/yandex-wn-dirac-run.slot1.log 2>&1 &
+( /usr/bin/sudo -i -n -u lhcb /home/lhcb/yandex-wn-dirac-run slot2 ) >/var/log/yandex-wn-dirac-run.slot2.log 2>&1 &
 
 # Wait until both subprocesses are finished
 wait
