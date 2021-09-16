@@ -19,9 +19,5 @@ yum -y update
 # Our script is run at the end of boot up
 echo '/home/lhcb/yandex-wn-setup' >>/etc/rc.d/rc.local
 
-# Only root needs this
-mv -f oauth.txt /root/oauth.txt
-chown root.root /root/oauth.txt
-
 # Rather than just do this to you!
 echo 'Now execute   shutdown -h now'

@@ -5,9 +5,9 @@
 
 date 
 export HOST=`/bin/hostname`
-export HOME=/home/lhcb
-mkdir -p $HOME/$1
-cd $HOME/$1
+export HOME=/home/lhcb/$1
+mkdir -p $HOME
+cd $HOME
 
 DIRAC_SITE=CLOUD.YANDEX.ru
 LHCBDIRAC_SETUP=LHCb-Production
@@ -32,12 +32,12 @@ export EDG_WL_SCRATCH=$TMPDIR
 export VO_LHCB_SW_DIR=/cvmfs/lhcb.cern.ch
 
 # Concatenated full certificate and key
-export X509_USER_PROXY=$HOME/etc/grid-security/x509proxy.pem
+export X509_USER_PROXY=/home/lhcb/etc/grid-security/x509proxy.pem
 
-python $HOME/production/Pilot3/dirac-pilot.py \
+python /home/lhcb/production/Pilot3/dirac-pilot.py \
  --debug \
  --setup=$LHCBDIRAC_SETUP \
- --pilotCFGFile=$HOME/production/Pilot3/pilot.json \
+ --pilotCFGFile=/home/lhcb/production/Pilot3/pilot.json \
  -l LHCb \
  -o lbRunOnly \
  --Name=$CE_NAME \
@@ -45,7 +45,7 @@ python $HOME/production/Pilot3/dirac-pilot.py \
  --MaxCycles=1 \
  --name=$DIRAC_SITE \
  --cert \
- --certLocation=$HOME/etc/grid-security \
+ --certLocation=/home/lhcb/etc/grid-security \
  --commandExtensions LHCbPilot \
  --pythonVersion=3
 

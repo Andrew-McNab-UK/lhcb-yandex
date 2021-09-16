@@ -14,32 +14,36 @@ yum -y install wget joe cvmfs cvmfs-config-egi glibc glibc-headers
 
 # Install the Yandex CLI
 curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-. yandex-cloud/path.bash.inc
+. $HOME/yandex-cloud/path.bash.inc
+
+# Only root needs this
+mv -f /home/lhcb/yandex-oauth.txt /root/yandex-oauth.txt
+chown root.root /root/yandex-oauth.txt
 
 # Get list of internal IP addresses of the Squids' instance group
 # The Cloud ID and Folder ID will need to be updated if they change!
 yc compute instance-group list-instances \
  --cloud-id b1g54dbp1scvqlrhgdns \
  --folder-id b1g6qvo98t320vf133hm \
- --token `cat /root/oauth.txt` \
- --name lhcb-squid \
- | cut -d'|' -f4 \
+ --token `cat /root/yandex-oauth.txt` \
+ --name lhcb-squid-prod \
+ | cut -d'|' -f5 \
  | grep '^ [1-9]' \
  | sed 's/ *//g' \
- | sed 's,.*,http://&:3128,' >proxy-ips.txt
+ | sed 's,.*,http://&:3128,' >/root/proxy-urls.txt
 
 echo List of Squid cache internal IPs
-cat proxy-ips.txt
+cat /root/proxy-urls.txt
 
 # Make the list into a CVMFS proxy expression
-echo CVMFS_HTTP_PROXY='"'`cat proxy-ips.txt`'"' \
+echo CVMFS_HTTP_PROXY='"'`cat /root/proxy-urls.txt`'"' \
  | sed 's/ /|/g' >>/etc/cvmfs/default.conf
 
 echo '/cvmfs program:/etc/auto.cvmfs' >>/etc/auto.master
 systemctl restart autofs
 
 # Check if cvmfs is working
-ls /etc/grid-security /cvmfs/lhcb.cern.ch
+ls /cvmfs/grid.cern.ch /cvmfs/lhcb.cern.ch
 
 # Disable TCP offloading etc
 ethtool -K eth0 tso off gso off gro off
