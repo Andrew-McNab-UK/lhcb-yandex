@@ -6,6 +6,7 @@
 date 
 export HOST=`/bin/hostname`
 export HOME=/home/dirac
+mkdir -p $HOME/$1
 cd $HOME/$1
 
 DIRAC_SITE=CLOUD.YANDEX.ru
