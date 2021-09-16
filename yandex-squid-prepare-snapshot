@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Must be run as root
+#
+# Get the system ready for a snapshot on the web dashboard
+#
+# You need to have these files in the lhcb $HOME directory first!
+#   yandex-squid-setup
+#   yandex-squid-template
+# 
+
+# Catch up as much as we can before the snapshot
+yum -y update 
+
+# Our script is run at the end of boot up
+echo '/home/lhcb/yandex-squid-setup' >>/etc/rc.d/rc.local
+
+# Rather than just do this to you!
+echo 'Now execute   shutdown -h now'

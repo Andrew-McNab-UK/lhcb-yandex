@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Copy the files to a Yandex VM needed to make a snapshot
+#
+# On your computer, clone the GitHub lhcb-yandex repo so it is a 
+# subdirectory of your current directory
+##
+# The single argument is the IP address of the VM you will snapshot
+#
+# Execute with  lhcb-yandex/yandex-squid-copy-snapshot-files xx.xx.xx.xx 
+#
+
+scp lhcb-yandex/yandex-squid-setup \
+    lhcb-yandex/yandex-squid-template \
+    lhcb-yandex/yandex-squid-prepare-snapshot \
+    lhcb@$1:
