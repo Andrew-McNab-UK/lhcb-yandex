@@ -2,8 +2,11 @@
 #
 # Copy the files to a Yandex VM needed to make a snapshot
 #
-# On your computer, put the hostcert.pem/hostkey.pem in the current 
-# directory and clone the GitHub lhcb-yandex repo so it is a subdirectory
+# On your computer, put the hostcert.pem/hostkey.pem and oauth.txt in the 
+# current directory and clone the GitHub lhcb-yandex repo so it is a 
+# subdirectory.
+#
+# oauth.txt contains the OAuth token 
 #
 # The single argument is the IP address of the VM you will snapshot
 #
@@ -12,8 +15,9 @@
 
 scp hostcert.pem \
     hostkey.pem  \
+    yandex-oauth.txt \
     lhcb-yandex/yandex-wn-setup \
     lhcb-yandex/yandex-wn-dirac-run \
     lhcb-yandex/yandex-wn-dirac-setup \
     lhcb-yandex/yandex-wn-prepare-snapshot \
-    dirac@$1:
+    lhcb@$1:

@@ -5,7 +5,7 @@
 
 date 
 export HOST=`/bin/hostname`
-export HOME=/home/dirac
+export HOME=/home/lhcb
 mkdir -p $HOME/$1
 cd $HOME/$1
 
