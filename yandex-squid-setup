@@ -1,0 +1,20 @@
+#!/bin/bash
+
+(
+  # Needed for YANDEX.ru  Not sure about other sites?
+  ethtool -K eth0 gso off gro off tso off
+
+  yum -y update 
+  yum -y install squid nano 
+
+  iptables -I INPUT -s 10.128.0.0/24 -p tcp -m state --state NEW -m tcp --dport 3128 -j ACCEPT
+  iptables -I INPUT -s 10.129.0.0/24 -p tcp -m state --state NEW -m tcp --dport 3128 -j ACCEPT
+  iptables -I INPUT -s 10.130.0.0/24 -p tcp -m state --state NEW -m tcp --dport 3128 -j ACCEPT
+
+  sed -e "s/##HOSTNAME##/`hostname`/" \
+      /home/lhcb/yandex-squid-template > /etc/squid/squid.conf
+
+  chkconfig squid on
+  service squid restart
+
+) >/var/log/yandex-squid-setup.log 2>&1 &
