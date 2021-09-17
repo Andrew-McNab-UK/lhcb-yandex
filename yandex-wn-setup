@@ -18,7 +18,9 @@ yum -y install curl wget joe cvmfs cvmfs-config-egi glibc glibc-headers
 
 # Install the Yandex CLI
 curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+if [ -r /root/yandex-cloud/path.bash.inc ] ; then
 . /root/yandex-cloud/path.bash.inc
+fi
 
 # Only root needs this
 mv -f /home/lhcb/yandex-oauth.txt /root/yandex-oauth.txt
