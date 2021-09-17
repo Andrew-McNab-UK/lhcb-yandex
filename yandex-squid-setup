@@ -1,12 +1,41 @@
 #!/bin/bash
 
+#
+# Start doing watchdog checks on Squid after 30 minutes, every 10 minutes
+#
+# If remote failures persist for more than 10 minutes then shutdown so 
+# another Squid VM can be created from scratch
+#
+# Failing to connect to Squid itself causes an immediate shutdown
+#
 (
-  # Needed for YANDEX.ru  Not sure about other sites?
+  sleep 1800
+  while :
+  do
+    curl --retry 10 \
+         --retry-delay 60 \
+         --proxy 127.0.0.1:3128 \
+         --output /tmp/curl.out http://cern.ch
+    if [ $? != 0 ] ; then
+      shutdown -h now
+    fi
+
+    sleep 600  
+  done
+) >/var/log/yandex-squid-check.log 2>&1 &
+
+#
+# Do the setup needed for Squid and start it
+#
+
+(
+  # Needed for OpenStack YANDEX.ru  Not sure about other sites?
   ethtool -K eth0 gso off gro off tso off
 
   yum -y update 
   yum -y install squid nano 
 
+  # This will have to change if the Yandex subnets change
   iptables -I INPUT -s 10.128.0.0/24 -p tcp -m state --state NEW -m tcp --dport 3128 -j ACCEPT
   iptables -I INPUT -s 10.129.0.0/24 -p tcp -m state --state NEW -m tcp --dport 3128 -j ACCEPT
   iptables -I INPUT -s 10.130.0.0/24 -p tcp -m state --state NEW -m tcp --dport 3128 -j ACCEPT
@@ -14,7 +43,6 @@
   sed -e "s/##HOSTNAME##/`hostname`/" \
       /home/lhcb/yandex-squid-template > /etc/squid/squid.conf
 
-  chkconfig squid on
-  service squid restart
-
+  systemctl restart squid
+  
 ) >/var/log/yandex-squid-setup.log 2>&1 &
