@@ -31,7 +31,7 @@
 
 (
   # Needed for OpenStack YANDEX.ru  Not sure about other sites?
-  ethtool -K eth0 gso off gro off tso off
+#  ethtool -K eth0 gso off gro off tso off
 
   yum -y update 
   yum -y install squid nano 
