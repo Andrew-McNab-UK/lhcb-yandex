@@ -30,8 +30,8 @@
 #
 
 (
-  # Needed for OpenStack YANDEX.ru  Not sure about other sites?
-#  ethtool -K eth0 gso off gro off tso off
+# Disable TCP offloading etc
+#  ethtool -K eth0 tso off gso off gro off
 
   yum -y update 
   yum -y install squid nano 

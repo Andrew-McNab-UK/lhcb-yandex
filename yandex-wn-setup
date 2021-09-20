@@ -8,6 +8,10 @@ set -vx
 (
 date
 printenv
+
+# Disable TCP offloading etc
+#ethtool -K eth0 tso off gso off gro off
+
 export HOME=/root
 setenforce 0
 yum -y install epel-release
@@ -50,9 +54,6 @@ systemctl restart autofs
 
 # Check if cvmfs is working
 ls /cvmfs/grid.cern.ch /cvmfs/lhcb.cern.ch
-
-# Disable TCP offloading etc
-#ethtool -K eth0 tso off gso off gro off
 
 # We never let VMs send emails (likely to be annoying errors from root)
 /sbin/iptables -A OUTPUT -p tcp --dport 25 -j DROP

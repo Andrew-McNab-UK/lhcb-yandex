@@ -19,5 +19,9 @@ yum -y update
 # Our script is run at the end of boot up
 echo '/home/lhcb/yandex-wn-setup' >>/etc/rc.d/rc.local
 
-# Rather than just do this to you!
-echo 'Now execute   shutdown -h now'
+sync
+fsfreeze --freeze /
+echo 'Ready for snapshot'
+echo
+echo 'Once snapshot is done, execute   fsfreeze --unfreeze /'
+echo
