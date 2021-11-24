@@ -16,11 +16,14 @@
 # Catch up as much as we can before the snapshot
 yum -y update 
 
-# Turn off IPv6
+# Turn off IPv6 network
 cat <<EOF >>/etc/sysctl.conf
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 EOF
+
+# Prioritise IPv4 DNS
+echo 'precedence ::ffff:0:0/96 100' >>/etc/gai.conf
 
 # Our script is run at the end of boot up
 echo '/home/lhcb/yandex-wn-setup' >>/etc/rc.d/rc.local
