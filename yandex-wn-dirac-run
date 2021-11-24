@@ -13,7 +13,7 @@ DIRAC_SITE=CLOUD.YANDEX.ru
 LHCBDIRAC_SETUP=LHCb-Production
 CE_NAME=cloud.yandex.ru
 
-export LHCBDIRAC_TMPDIR=`mktemp -d -p $DIRAC_TMP`
+export LHCBDIRAC_TMPDIR=`mktemp -d -p $HOME`
 cd $LHCBDIRAC_TMPDIR
 
 # Default if not given explicitly
