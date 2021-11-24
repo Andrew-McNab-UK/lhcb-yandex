@@ -21,6 +21,9 @@ EOF
 # Prioritise IPv4 DNS
 echo 'precedence ::ffff:0:0/96 100' >>/etc/gai.conf
 
+# Use IPv4 for yum updates
+echo 'ip_resolve=4' >> /etc/yum.conf
+
 # Our script is run at the end of boot up
 echo '/home/lhcb/yandex-squid-setup' >>/etc/rc.d/rc.local
 
