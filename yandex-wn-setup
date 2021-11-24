@@ -39,6 +39,7 @@ yc compute instance-group list-instances \
  --name lhcb-squid-prod \
  | cut -d'|' -f5 \
  | grep '^ [1-9]' \
+ | head -5 \
  | sed 's/ *//g' \
  | sed 's,.*,http://&:3128,' >/root/proxy-urls.txt
 
