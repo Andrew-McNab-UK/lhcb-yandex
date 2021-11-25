@@ -8,6 +8,7 @@ set -vx
 (
 date
 printenv
+#hostname `ifconfig eth0|grep inet | sed 's/.*inet //' | cut -f1 -d' '|sed 's/\./-/g'``date +'-%s'`
 
 # Disable TCP offloading etc
 #ethtool -K eth0 tso off gso off gro off
