@@ -25,7 +25,8 @@ echo 'precedence ::ffff:0:0/96 100' >>/etc/gai.conf
 echo 'ip_resolve=4' >> /etc/yum.conf
 
 # Our script is run at the end of boot up
-echo '/home/lhcb/yandex-squid-setup' >>/etc/rc.d/rc.local
+echo '/home/lhcb/yandex-squid-setup &' >>/etc/rc.d/rc.local
+echo 'exit 0' >>/etc/rc.d/rc.local
 
 sync
 fsfreeze --freeze /

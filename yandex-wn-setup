@@ -5,13 +5,15 @@
 
 set -vx
 
+if [ -f /var/lock/subsys/yandex-wn-setup ] ; then
+  exit
+fi
+
+touch /var/lock/subsys/yandex-wn-setup
+
 (
 date
 printenv
-#hostname `ifconfig eth0|grep inet | sed 's/.*inet //' | cut -f1 -d' '|sed 's/\./-/g'``date +'-%s'`
-
-# Disable TCP offloading etc
-#ethtool -K eth0 tso off gso off gro off
 
 export HOME=/root
 setenforce 0

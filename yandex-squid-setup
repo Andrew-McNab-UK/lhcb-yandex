@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ -f /var/lock/subsys/yandex-squid-setup ] ; then
+  exit
+fi
+
+touch /var/lock/subsys/yandex-squid-setup
+
 #
 # Start doing watchdog checks on Squid after 30 minutes, every 10 minutes
 #
