@@ -96,11 +96,18 @@ done
 # Wait until both subprocesses are finished
 wait
 
-# Try conventional shutdown
+# Delete this VM, to prevent recycling
+yc compute instance delete \
+  --cloud-id b1g54dbp1scvqlrhgdns \
+  --folder-id b1g6qvo98t320vf133hm \
+  --token `cat /root/yandex-oauth.txt` \
+  --name `hostname | cut -f1 -d.`
+
+# We should never get here but do a conventional shutdown if we do
 /sbin/shutdown -h now
 sleep 60
 
-## If that fails, do an instant reboot
+# If that fails, do an instant reboot
 echo o > /proc/sysrq-trigger
 
 ) >/var/log/yandex-wn-setup.log 2>&1
