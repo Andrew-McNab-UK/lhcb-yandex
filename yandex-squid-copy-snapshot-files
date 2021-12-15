@@ -10,8 +10,7 @@
 # Execute with  lhcb-yandex/yandex-squid-copy-snapshot-files xx.xx.xx.xx 
 #
 
-scp yandex-oauth.txt \
-    lhcb-yandex/yandex-squid-setup \
+scp lhcb-yandex/yandex-squid-setup \
     lhcb-yandex/yandex-squid-template \
     lhcb-yandex/yandex-squid-prepare-snapshot \
     lhcb@$1:

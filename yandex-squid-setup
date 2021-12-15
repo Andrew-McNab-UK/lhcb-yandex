@@ -69,7 +69,7 @@ touch /var/lock/subsys/yandex-squid-setup
   systemctl stop squid
 
   # In case we get a recycled disk 
-  rm -Rf /var/spool/squid
+  rm -Rf /var/spool/squid/*
 
   systemctl start squid
   
