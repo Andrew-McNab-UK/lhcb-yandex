@@ -15,6 +15,7 @@ chmod go-rw,u-w $HOME/hostkey.pem
 cat $HOME/hostcert.pem $HOME/hostkey.pem >$HOME/etc/grid-security/x509proxy.pem
 chmod go-rw,u-w $HOME/etc/grid-security/x509proxy.pem
 
+rm -Rf $HOME/production/Pilot3
 mkdir -p $HOME/production/Pilot3
 cd $HOME/production/Pilot3
 

@@ -96,14 +96,16 @@ done
 # Wait until both subprocesses are finished
 wait
 
-# Delete this VM, to prevent recycling
-yc compute instance delete \
-  --cloud-id b1g54dbp1scvqlrhgdns \
-  --folder-id b1g6qvo98t320vf133hm \
-  --token `cat /root/yandex-oauth.txt` \
-  --name `hostname | cut -f1 -d.`
+## Delete this VM, to prevent recycling
+#yc compute instance delete \
+#  --cloud-id b1g54dbp1scvqlrhgdns \
+#  --folder-id b1g6qvo98t320vf133hm \
+#  --token `cat /root/yandex-oauth.txt` \
+#  --name `hostname | cut -f1 -d.`
+#
+## We should never get here but if we do
 
-# We should never get here but do a conventional shutdown if we do
+# Do a conventional shutdown 
 /sbin/shutdown -h now
 sleep 60
 

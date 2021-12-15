@@ -24,14 +24,14 @@ touch /var/lock/subsys/yandex-squid-setup
          --proxy 127.0.0.1:3128 \
          --output /tmp/curl.out http://cern.ch
     if [ $? != 0 ] ; then
-      # Delete this VM, to prevent recycling
-      yc compute instance delete \
-        --cloud-id b1g54dbp1scvqlrhgdns \
-        --folder-id b1g6qvo98t320vf133hm \
-        --token `cat /root/yandex-oauth.txt` \
-        --name `hostname | cut -f1 -d.`
-
-      # We should never get here but do a conventional shutdown if we do
+#      # Delete this VM, to prevent recycling
+#      yc compute instance delete \
+#        --cloud-id b1g54dbp1scvqlrhgdns \
+#        --folder-id b1g6qvo98t320vf133hm \
+#        --token `cat /root/yandex-oauth.txt` \
+#        --name `hostname | cut -f1 -d.`
+#
+#      # We should never get here but do a conventional shutdown if we do
       shutdown -h now
     fi
 
@@ -44,21 +44,18 @@ touch /var/lock/subsys/yandex-squid-setup
 #
 
 (
-# Disable TCP offloading etc
-#  ethtool -K eth0 tso off gso off gro off
-
   yum -y update 
   yum -y install squid nano 
 
-  # Install the Yandex CLI
-  curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-  if [ -r /root/yandex-cloud/path.bash.inc ] ; then
-    . /root/yandex-cloud/path.bash.inc
-  fi
-
-  # Only root needs this
-  mv -f /home/lhcb/yandex-oauth.txt /root/yandex-oauth.txt
-  chown root.root /root/yandex-oauth.txt
+#  # Install the Yandex CLI
+#  curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+#  if [ -r /root/yandex-cloud/path.bash.inc ] ; then
+#    . /root/yandex-cloud/path.bash.inc
+#  fi
+#
+#  # Only root needs this
+#  mv -f /home/lhcb/yandex-oauth.txt /root/yandex-oauth.txt
+#  chown root.root /root/yandex-oauth.txt
 
   # This will have to change if the Yandex subnets change
   iptables -I INPUT -s 10.128.0.0/24 -p tcp -m state --state NEW -m tcp --dport 3128 -j ACCEPT
@@ -68,6 +65,12 @@ touch /var/lock/subsys/yandex-squid-setup
   sed -e "s/##HOSTNAME##/`hostname`/" \
       /home/lhcb/yandex-squid-template > /etc/squid/squid.conf
 
-  systemctl restart squid
+  # Stop and start squid to pick up configuration
+  systemctl stop squid
+
+  # In case we get a recycled disk 
+  rm -Rf /var/spool/squid
+
+  systemctl start squid
   
 ) >/var/log/yandex-squid-setup.log 2>&1 &
